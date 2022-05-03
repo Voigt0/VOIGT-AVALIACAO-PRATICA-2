@@ -15,21 +15,29 @@
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
     <style>
+        .main {
+            padding-left: 5vw;
+        }
+
+        table, th, td {
+            padding: 1vw;
+            border: 3px solid black;
+            border-style: dotted;
+        }
     </style>
 </head>
 <body class="">
     <?php include_once "menu.php"; ?>
-    <div class="">
-        <p>Venda: <?php echo $id; ?></p>
-        <p>Cliente: <?php echo $cliente; ?></p>
-        <table class="table table-striped" style="background-color: #FFF;">
+    <div class="main">
+        <p>Venda: <?php echo $id; ?> Cliente: <?php echo $cliente; ?></p>
+        <table class="" style="background-color: #FFF;">
             <thead>
-                <tr class="table-dark">
-                    <th scope="col">#ID</th>
+                <tr class="">
+                    <th scope="col">It</th>
                     <th scope="col">Título</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col">Preço</th>
-                    <th scope="col">Total</th>
+                    <th scope="col">Qtd</th>
+                    <th scope="col">Valor Unitário</th>
+                    <th scope="col">Valor Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +68,7 @@
             <?php } ?> 
             </tbody>
         </table>
+        <br>
         <p>Total: <?php echo number_format ($totalAll, 2, ',', '.');?></p>
         <p>Desconto: <?php echo number_format ($desconto, 2, ',', '.');?></p>
         <p>Total da venda: <?php echo number_format ($totalFin, 2, ',', '.');?></p>
