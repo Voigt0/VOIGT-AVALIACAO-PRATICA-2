@@ -105,11 +105,18 @@
 
         }
 
-        function adicionarItem($totalF, $v_idVenda){
+        function adicionarItem($v_idVenda){
             $pdo = Conexao::getInstance();
-                $stmt = $pdo->prepare("UPDATE `Venda` SET `v_valor_total_venda` = :totalF WHERE (`v_idVenda` = :v_idVenda);");
+                $stmt = $pdo->query("SELECT SUM(iv_valor_total_item) as total FROM item_venda
+                                      WHERE iv_v_idVenda = $v_idVenda;");
+                $stmt->bindValue(':iv_idVenda', $v_idVenda, PDO::PARAM_INT);
+                $stmt->execute();
+                foreach($stmt->fetchAll() as $linha){
+                $total = $linha['total'];
+                }
+                $stmt = $pdo->prepare("UPDATE `Venda` SET `v_valor_total_venda` = :total WHERE (`v_idVenda` = :v_idVenda);");
                 $stmt->bindValue(':v_idVenda', $v_idVenda, PDO::PARAM_INT);
-                $stmt->bindValue(':totalF', $totalF, PDO::PARAM_STR);
+                $stmt->bindValue(':total', $total, PDO::PARAM_STR);
                 return $stmt->execute();
         }
 

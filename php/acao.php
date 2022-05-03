@@ -47,6 +47,8 @@
             } else if($seletor == "Item_venda"){
                 $item_venda = new Item_venda($_POST['iv_v_idVenda'], $_POST['iv_l_idLivro'], $_POST['iv_quantidade'], $_POST['iv_valor_total_item'], $_POST['iv_data_venda']);
                 $item_venda->insert();
+                $item_venda = new Item_venda('', '', '', '', '');
+                $item_venda->adicionarItem($_POST['iv_v_idVenda']);
                 header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
@@ -78,6 +80,8 @@
             } else if($seletor == "Item_venda"){
                 $item_venda = new Item_venda($_GET['id1'], $_GET['id2'], '', '', '');
                 $item_venda->delete();
+                $item_venda = new Item_venda('', '', '', '', '');
+                $item_venda->adicionarItem($_GET['id1']);
                 header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
@@ -109,6 +113,8 @@
             } else if($seletor == "Item_venda"){
                 $item_venda = new Item_venda($_POST['iv_v_idVenda'], $_POST['iv_l_idLivro'], $_POST['iv_quantidade'], $_POST['iv_valor_total_item'], $_POST['iv_data_venda']);
                 $item_venda->update($_POST['old_id1'], $_POST['old_id2']);
+                $item_venda = new Item_venda('', '', '', '', '');
+                $item_venda->adicionarItem($_POST['iv_v_idVenda']);
                 header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){

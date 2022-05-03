@@ -5,7 +5,6 @@
         private $v_valor_total_venda;
         private $v_desconto;
         private $v_c_idCliente;
-        private $iv_data_venda;
 
         public function __construct($id, $valor, $desconto, $idCliente) {
             $this->setId($id);
@@ -93,6 +92,39 @@
                     return $stmt->fetchAll();
         
                 return false;
+        }
+
+        public function listarVenda($id){
+            require_once("../conf/Conexao.php");
+            $conexao = Conexao::getInstance();
+            $query = "SELECT v_idVenda, v_valor_total_venda, v_desconto, l_titulo, iv_quantidade, iv_valor_total_item, c_nome, l_preco
+                                    FROM Venda, Item_venda, Cliente, Livro
+                                    WHERE v_idVenda LIKE '$id%'
+                                    AND iv_v_idVenda = v_idVenda
+                                    AND l_idLivro = iv_l_idLivro 
+                                    AND c_idCliente = v_c_idCliente
+                                    ORDER BY v_idVenda";
+            $stmt = $conexao->prepare($query);
+            $stmt->execute();
+            $str = "";
+            $totalAll = 0;
+            foreach($stmt->fetchAll() as $linha) {
+                $str .= "<tr>";
+                $str .= "<td>". $linha['v_idVenda'] ."</td>";
+                $str .= "<td>". $linha['l_titulo'] ."</td>";
+                $str .= "<td>". $linha['iv_quantidade'] ."</td>";
+                $str .= "<td>". number_format ($linha['l_preco'], 2, ',', '.') ."</td>";
+                $str .= "<td>". number_format ($linha['l_preco']*$linha['iv_quantidade'], 2, ',', '.') ."</td>";
+                $str .= "</tr>";
+                $totalUni = $linha['l_preco'] * $linha['iv_quantidade'];
+                $totalAll = $totalUni + $totalAll;
+                $desconto = $linha['v_desconto'];
+                $totalFin = $totalAll - $desconto;
+            }
+            $str .= "<p>Total: ". number_format ($totalAll, 2, ',', '.') ."</p>";
+            $str .= "<p>Desconto: ". number_format ($desconto, 2, ',', '.') ."</p>";
+            $str .= "<p>Total Venda: ". number_format ($totalFin, 2, ',', '.') ."</p>";
+            return $str;
         }
     }
 
