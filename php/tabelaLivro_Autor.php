@@ -39,8 +39,8 @@
         <table class="table table-striped" style="background-color: #FFF;">
             <thead>
                 <tr class="table-dark">
-                    <th scope="col">#ID Livro</th>
-                    <th scope="col">#ID Autor</th>
+                    <th scope="col">Livro</th>
+                    <th scope="col">Autor</th>
                     <th scope="col">Alterar</th>
                     <th scope="col">Excluir</th>
                 </tr>
@@ -57,16 +57,18 @@
                     }
                 }
                 $pdo = Conexao::getInstance();
-                $consulta = $pdo->query("SELECT * FROM Livro_Autor
+                $consulta = $pdo->query("SELECT * FROM Livro_Autor, Livro, Autor
                                         WHERE $busca $type $procurar
+                                        AND l_idLivro = la_l_idLivro
+                                        AND a_idAutor = la_a_idAutor
                                         ORDER BY $busca");
                 while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
             ?>
                 <tr>
-                    <th scope="row"><?php echo $linha['la_l_idLivro'];?></th>
-                    <th scope="row"><?php echo $linha['la_a_idAutor'];?></th>
-                    <td scope="row"><a href="cadLivro_Autor.php?id=<?php echo $linha['la_l_idLivro'];?>&comando=update"><img src="../img/history-solid.svg" style="width: 3vw;"></a></td>
-                    <td><a onclick="return confirm('Deseja mesmo excluir?')" href="acao.php?id=<?php echo $linha['la_l_idLivro'];?>&seletor=Livro_Autor&comando=deletar"><img src="../img/trash.svg" style="width: 3vw;"></a></td>
+                    <td scope="row"><?php echo $linha['l_titulo'];?></td>
+                    <td scope="row"><?php echo $linha['a_nome'];?></td>
+                    <td scope="row"><a href="cadLivro_Autor.php?id1=<?php echo $linha['la_l_idLivro'];?>&id2=<?php echo $linha['la_a_idAutor'];?>&comando=update"><img src="../img/history-solid.svg" style="width: 3vw;"></a></td>
+                    <td><a onclick="return confirm('Deseja mesmo excluir?')" href="acao.php?id1=<?php echo $linha['la_l_idLivro'];?>&id2=<?php echo $linha['la_a_idAutor'];?>&seletor=Livro_Autor&comando=deletar"><img src="../img/trash.svg" style="width: 3vw;"></a></td>
                 </tr>
             <?php } ?> 
             </tbody>

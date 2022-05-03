@@ -9,44 +9,45 @@
     acao($comando, $seletor);
 
     function acao($acao, $seletor){
-        if($seletor == "operacao"){
-            require_once "../classes/ContaCorrente.class.php";
-            if($_POST['cc_operacao'] == "saque"){
-                $dados;
-                $dados = buscarDados($_POST['cc_numero'], "ContaCorrente");
-                $contaCorrente = new ContaCorrente($_POST['cc_numero'], $dados['cc_saldo'], $_POST['cc_pf_id'], "");
-                $contaCorrente->saque($_POST['cc_valor']);
-                header("location:tabelaContaCorrente.php");
-            } else if($_POST['cc_operacao'] == "deposito"){
-                $dados;
-                $dados = buscarDados($_POST['cc_numero'], "ContaCorrente");
-                $contaCorrente = new ContaCorrente($_POST['cc_numero'], $dados['cc_saldo'], $_POST['cc_pf_id'], "");
-                $contaCorrente->deposito($_POST['cc_valor']);
-                header("location:tabelaContaCorrente.php");
-            }
-        }
-
-        else if($seletor == "PessoaFisica"){
-            require_once "../classes/PessoaFisica.class.php";
-        } else if($seletor == "ContaCorrente"){
-            require_once "../classes/ContaCorrente.class.php";
-        } else if($seletor == "Contatos"){
-            require_once "../classes/Contatos.class.php";
+         if($seletor == "Autor"){
+            require_once "../classes/Autor.class.php";
+        } else if($seletor == "Livro"){
+            require_once "../classes/Livro.class.php";
+        } else if($seletor == "Livro_Autor"){
+            require_once "../classes/Livro_Autor.class.php";
+        } else if($seletor == "Cliente"){
+            require_once "../classes/Cliente.class.php";
+        } else if($seletor == "Item_venda"){
+            require_once "../classes/Item_venda.class.php";
+        } else if($seletor == "Venda"){
+            require_once "../classes/Venda.class.php";
         }
         if($acao == "insert"){
             try{
-            if($seletor == "PessoaFisica"){
-                $pessoaFisica = new PessoaFisica("", $_POST['pf_cpf'], $_POST['pf_nome'], $_POST['pf_dt_nascimento'],);
-                $pessoaFisica->inserir();
-                header("location:tabelaPessoaFisica.php");
-            } else if($seletor == "ContaCorrente") {
-                $contaCorrente = new ContaCorrente("", $_POST['cc_saldo'], $_POST['cc_pf_id'], $_POST['cc_dt_ultima_alteracao']);
-                $contaCorrente->inserir();
-                header("location:tabelaContaCorrente.php");
-            } else if($seletor == "Contatos") {
-                $contatos = new Contatos("", $_POST['cont_tipo'], $_POST['cont_descricao'], $_POST['cont_pf_id']);
-                $contatos->inserir();
-                header("location:tabelaContatos.php");
+            if($seletor == "Autor"){
+                $autor = new Autor('', $_POST['a_nome'], $_POST['a_sobrenome']);
+                $autor->insert();
+                header("location:tabelaAutor.php");
+            } else if($seletor == "Livro"){
+                $livro = new Livro('', $_POST['l_titulo'], $_POST['l_ano_publicacao'], $_POST['l_isdn'], $_POST['l_preco']);
+                $livro->insert();
+                header("location:tabelaLivro.php");
+            } else if($seletor == "Livro_Autor"){
+                $livro_autor = new Livro_Autor($_POST['la_l_idLivro'], $_POST['la_a_idAutor']);
+                $livro_autor->insert();
+                header("location:tabelaLivro_Autor.php");
+            } else if($seletor == "Cliente"){
+                $cliente = new Cliente('', $_POST['c_nome'], $_POST['c_cpf'], $_POST['c_dt_nascimento']);
+                $cliente->insert();
+                header("location:tabelaCliente.php");
+            } else if($seletor == "Venda"){
+                $venda = new Venda('', $_POST['v_valor_total_venda'], $_POST['v_desconto'], $_POST['v_c_idCliente']);
+                $venda->insert();
+                header("location:tabelaVenda.php");
+            } else if($seletor == "Item_venda"){
+                $item_venda = new Item_venda($_POST['iv_v_idVenda'], $_POST['iv_l_idLivro'], $_POST['iv_quantidade'], $_POST['iv_valor_total_item'], $_POST['iv_data_venda']);
+                $item_venda->insert();
+                header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
             echo "<h1>Erro ao cadastrar a conta.</h1>
@@ -54,18 +55,30 @@
         }
         } else if($acao == "deletar"){
         try{
-            if($seletor == "PessoaFisica"){
-                $pessoaFisica = new PessoaFisica($_GET['id'], "", "", "");
-                $pessoaFisica->deletar();
-                header("location:tabelaPessoaFisica.php");
-            } else if($seletor == "ContaCorrente") {
-                $contaCorrente = new ContaCorrente($_GET['id'], "", "", "");
-                $contaCorrente->deletar();
-                header("location:tabelaContaCorrente.php");
-            } else if($seletor == "Contatos") {
-                $contatos = new Contatos($_GET['id'], "", "", "");
-                $contatos->deletar();
-                header("location:tabelaContatos.php");
+            if($seletor == "Autor"){
+                $autor = new Autor($_GET['id'], "", "");
+                $autor->delete();
+                header("location:tabelaAutor.php");
+            } else if($seletor == "Livro"){
+                $livro = new Livro($_GET['id'], "", "", "", "");
+                $livro->delete();
+                header("location:tabelaLivro.php");
+            } else if($seletor == "Livro_Autor"){
+                $livro_autor = new Livro_Autor($_GET['id1'], $_GET['id2']);
+                $livro_autor->delete();
+                header("location:tabelaLivro_Autor.php");
+            } else if($seletor == "Cliente"){
+                $cliente = new Cliente($_GET['id'], '', '', '');
+                $cliente->delete();
+                header("location:tabelaCliente.php");
+            } else if($seletor == "Venda"){
+                $venda = new Venda($_GET['id'], '', '', '');
+                $venda->delete();
+                header("location:tabelaVenda.php");
+            } else if($seletor == "Item_venda"){
+                $item_venda = new Item_venda($_GET['id1'], $_GET['id2'], '', '', '');
+                $item_venda->delete();
+                header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
             echo "<h1>Erro ao cadastrar a conta.</h1>
@@ -73,18 +86,30 @@
         }
         } else if($acao == "update"){
         try{
-            if($seletor == "PessoaFisica"){
-                $pessoaFisica = new PessoaFisica($_POST['id'], $_POST['pf_cpf'], $_POST['pf_nome'],  $_POST['pf_dt_nascimento']);
-                $pessoaFisica->atualizar();
-                header("location:tabelaPessoaFisica.php");
-            } else if($seletor == "ContaCorrente"){
-                $contaCorrente = new ContaCorrente($_POST['id'], $_POST['cc_saldo'], $_POST['cc_pf_id'], $_POST['cc_dt_ultima_alteracao']);
-                $contaCorrente->atualizar();
-                header("location:tabelaContaCorrente.php");
-            } else if($seletor == "Contatos"){
-                $contatos = new Contatos($_POST['id'], $_POST['cont_tipo'], $_POST['cont_descricao'],  $_POST['cont_pf_id']);
-                $contatos->atualizar();
-                header("location:tabelaContatos.php");
+            if($seletor == "Autor"){
+                $autor = new Autor($_POST['id'], $_POST['a_nome'], $_POST['a_sobrenome']);
+                $autor->update();
+                header("location:tabelaAutor.php");
+            } else if($seletor == "Livro"){
+                $livro = new Livro($_POST['id'], $_POST['l_titulo'], $_POST['l_ano_publicacao'], $_POST['l_isdn'], $_POST['l_preco']);
+                $livro->update();
+                header("location:tabelaLivro.php");
+            } else if($seletor == "Livro_Autor"){
+                $livro = new Livro_Autor($_POST['la_l_idLivro'], $_POST['la_a_idAutor']);
+                $livro->update();
+                header("location:tabelaLivro_Autor.php");
+            } else if($seletor == "Cliente"){
+                $cliente = new Cliente($_POST['id'], $_POST['c_nome'], $_POST['c_cpf'], $_POST['c_dt_nascimento']);
+                $cliente->update();
+                header("location:tabelaCliente.php");
+            } else if($seletor == "Venda"){
+                $venda = new Venda($_POST['id'], $_POST['v_valor_total_venda'], $_POST['v_desconto'], $_POST['v_c_idCliente']);
+                $venda->update();
+                header("location:tabelaVenda.php");
+            } else if($seletor == "Item_venda"){
+                $item_venda = new Item_venda($_POST['iv_v_idVenda'], $_POST['iv_l_idLivro'], $_POST['iv_quantidade'], $_POST['iv_valor_total_item'], $_POST['iv_data_venda']);
+                $item_venda->update();
+                header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
             echo "<h1>Erro ao cadastrar a conta.</h1>
@@ -96,32 +121,62 @@
     function buscarDados($id,$seletor){
         $pdo = Conexao::getInstance();
         $dados = array();
-    if($seletor == 'PessoaFisica'){
-        $consulta = $pdo->query("SELECT * FROM pessoa_fisica WHERE pf_id = $id");
+    if($seletor == 'Autor'){
+        $consulta = $pdo->query("SELECT * FROM Autor WHERE a_idAutor = $id");
         while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
-            $dados['pf_cpf'] = $linha['pf_cpf'];
-            $dados['pf_nome'] = $linha['pf_nome'];
-            $dados['pf_dt_nascimento'] = $linha['pf_dt_nascimento'];
+            $dados['a_idAutor'] = $linha['a_idAutor'];
+            $dados['a_nome'] = $linha['a_nome'];
+            $dados['a_sobrenome'] = $linha['a_sobrenome'];
         }
-    } else if($seletor == 'ContaCorrente'){
-        $consulta = $pdo->query("SELECT * FROM conta_corrente, pessoa_fisica WHERE cc_numero = $id");
+    } else if($seletor == 'Livro'){
+        $consulta = $pdo->query("SELECT * FROM Livro WHERE l_idLivro = $id");
         while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
-            $dados['cc_saldo'] = $linha['cc_saldo'];
-            $dados['cc_pf_id'] = $linha['cc_pf_id'];
-            $dados['cc_dt_ultima_alteracao'] = $linha['cc_dt_ultima_alteracao'];
+            $dados['l_idLivro'] = $linha['l_idLivro'];
+            $dados['l_titulo'] = $linha['l_titulo'];
+            $dados['l_ano_publicacao'] = $linha['l_ano_publicacao'];
+            $dados['l_isdn'] = $linha['l_isdn'];
+            $dados['l_preco'] = $linha['l_preco'];
         }
-    } else if($seletor == 'Contatos'){
-        $consulta = $pdo->query("SELECT * FROM contatos, pessoa_fisica WHERE cont_id = $id");
+    } else if($seletor == 'Cliente'){
+        $consulta = $pdo->query("SELECT * FROM Cliente WHERE c_idCliente = $id");
         while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
-            $dados['cont_tipo'] = $linha['cont_tipo'];
-            $dados['cont_descricao'] = $linha['cont_descricao'];
-            $dados['cont_pf_id'] = $linha['cont_pf_id'];
+            $dados['c_idCliente'] = $linha['c_idCliente'];
+            $dados['c_nome'] = $linha['c_nome'];
+            $dados['c_cpf'] = $linha['c_cpf'];
+            $dados['c_dt_nascimento'] = $linha['c_dt_nascimento'];
+        }
+    } else if($seletor == 'Venda'){
+        $consulta = $pdo->query("SELECT * FROM Venda WHERE v_idVenda = $id");
+        while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+            $dados['v_idVenda'] = $linha['v_idVenda'];
+            $dados['v_valor_total_venda'] = $linha['v_valor_total_venda'];
+            $dados['v_desconto'] = $linha['v_desconto'];
+            $dados['v_c_idCliente'] = $linha['v_c_idCliente'];
+        }
+    }
+        return $dados;
+    }
+
+    function buscarDadosAssoc($id1, $id2, $seletor){
+        $pdo = Conexao::getInstance();
+        $dados = array();
+    if($seletor == 'Livro_Autor'){
+        $consulta = $pdo->query("SELECT * FROM Livro_Autor WHERE la_l_idLivro = $id1 AND la_a_idAutor = $id2");
+        while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+            $dados['la_l_idLivro'] = $linha['la_l_idLivro'];
+            $dados['la_a_idAutor'] = $linha['la_a_idAutor'];
+        }
+    } else if($seletor == 'Item_venda'){
+        $consulta = $pdo->query("SELECT * FROM Item_venda WHERE iv_v_idVenda = $id1 AND iv_l_idLivro = $id2");
+        while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+            $dados['iv_quantidade'] = $linha['iv_quantidade'];
+            $dados['iv_valor_total_item'] = $linha['iv_valor_total_item'];
+            $dados['iv_data_venda'] = $linha['iv_data_venda'];
         }
     }
         return $dados;
     }
     
-    require_once("../classes/PessoaFisica.class.php");
     function exibir($chave, $dado){
         $str = 0;
         foreach($dado as $linha){
@@ -130,19 +185,35 @@
         return $str;
     }
 
-
-    function lista_pessoa($id){
-        $pessoaFisica = new PessoaFisica("","","","");
-        $lista = $pessoaFisica->buscarPessoa($id);
-        return exibir(array('pf_id', 'pf_nome'), $lista);
+    require_once("../classes/Livro.class.php");
+    function lista_livro($id){
+        $livro = new Livro("","", "", "", "");
+        $lista = $livro->buscarLivro($id);
+        return exibir(array('l_idLivro', 'l_titulo'), $lista);
 
     }
 
-    require_once("../classes/ContaCorrente.class.php");
-    function lista_conta($id){
-        $pessoaFisica = new ContaCorrente("","","","");
-        $lista = $pessoaFisica->buscarConta($id);
-        return exibir(array('cc_numero', 'cc_numero'), $lista);
+    require_once("../classes/Autor.class.php");
+    function lista_autor($id){
+        $autor = new Autor("","", "");
+        $lista = $autor->buscarAutor($id);
+        return exibir(array('a_idAutor', 'a_nome'), $lista);
+
+    }
+
+    require_once("../classes/Cliente.class.php");
+    function lista_cliente($id){
+        $cliente = new Cliente("","", "", "");
+        $lista = $cliente->buscarCliente($id);
+        return exibir(array('c_idCliente', 'c_nome'), $lista);
+
+    }
+
+    require_once("../classes/Venda.class.php");
+    function lista_venda($id){
+        $venda = new Venda("","", "", "");
+        $lista = $venda->buscarVenda($id);
+        return exibir(array('v_idVenda', 'v_idVenda'), $lista);
 
     }
 ?>

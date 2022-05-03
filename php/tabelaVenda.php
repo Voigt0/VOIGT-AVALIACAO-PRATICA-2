@@ -45,7 +45,7 @@
                     <th scope="col">#ID</th>
                     <th scope="col">Valor total da venda</th>
                     <th scope="col">Desconto</th>
-                    <th scope="col">#ID Cliente</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Alterar</th>
                     <th scope="col">Excluir</th>
                 </tr>
@@ -62,8 +62,9 @@
                     }
                 }
                 $pdo = Conexao::getInstance();
-                $consulta = $pdo->query("SELECT * FROM Venda
+                $consulta = $pdo->query("SELECT * FROM Venda, Cliente
                                         WHERE $busca $type $procurar
+                                        AND c_idCliente = v_c_idCliente
                                         ORDER BY $busca");
                 while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
             ?>
@@ -71,7 +72,7 @@
                     <th scope="row"><?php echo $linha['v_idVenda'];?></th>
                     <td scope="row"><?php echo $linha['v_valor_total_venda'];?></td>
                     <td scope="row"><?php echo $linha['v_desconto'];?></td>
-                    <td scope="row"><?php echo $linha['v_c_idCliente'];?></td>
+                    <td scope="row"><?php echo $linha['c_nome'];?></td>
                     <td scope="row"><a href="cadVenda.php?id=<?php echo $linha['v_idVenda'];?>&comando=update"><img src="../img/history-solid.svg" style="width: 3vw;"></a></td>
                     <td><a onclick="return confirm('Deseja mesmo excluir?')" href="acao.php?id=<?php echo $linha['v_idVenda'];?>&seletor=Venda&comando=deletar"><img src="../img/trash.svg" style="width: 3vw;"></a></td>
                 </tr>

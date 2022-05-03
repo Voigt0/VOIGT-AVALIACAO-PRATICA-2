@@ -46,6 +46,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">CPF</th>
                     <th scope="col">Data de nascimento</th>
+                    <th scope="col">Idade</th>
                     <th scope="col">Alterar</th>
                     <th scope="col">Excluir</th>
                 </tr>
