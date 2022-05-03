@@ -22,7 +22,7 @@
     if ($comando == 'update'){
     $id1 = isset($_GET['id1']) ? $_GET['id1'] : "";
     $id2 = isset($_GET['id2']) ? $_GET['id2'] : "";
-    if ($id1 > 0)
+    if ($id1 > 0 && $id2 > 0)
         $dados = buscarDadosAssoc($id1, $id2, $seletor);
     }
     $iv_v_idVenda = isset($_POST['iv_v_idVenda']) ? $_POST['iv_v_idVenda'] : "";
@@ -38,11 +38,13 @@
     <form action="acao.php" method="post" id="form" style="padding-left: 5vw; padding-right: 5vw;">
         <h1>Cadastro Item_venda</h1>
         <br>
+        <input type="hidden" id="old_id1" name="old_id1" class="old_id1" value="<?php echo $_GET['id1']; ?>">
+        <input type="hidden" id="old_id2" name="old_id2" class="old_id2" value="<?php echo $_GET['id2']; ?>">
         <div class="form-group">
         <label class="formItem formText" id="">Venda:</label>
         <select class="form-select" aria-label="Escolha a venda" name="iv_v_idVenda" value="">  
             <?php
-                echo lista_venda(0);
+                echo listar('v_idVenda', 'v_idVenda', 0, 'Venda');
             ?>
         </select>
         </div>
@@ -51,8 +53,8 @@
         <label class="formItem formText" id="">Livro:</label>
         <select class="form-select" aria-label="Escolha o livro" name="iv_l_idLivro" value="">  
             <?php
-                echo lista_livro(0);
-            ?>
+                echo listar('l_idLivro', 'l_titulo', 0, 'Livro');
+                ?>
         </select>
         </div>
         <br>

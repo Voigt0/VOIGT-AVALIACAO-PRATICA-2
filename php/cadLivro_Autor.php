@@ -22,7 +22,7 @@
     if ($comando == 'update'){
     $id1 = isset($_GET['id1']) ? $_GET['id1'] : "";
     $id2 = isset($_GET['id2']) ? $_GET['id2'] : "";
-    if ($id1 > 0)
+    if ($id1 > 0 && $id2 > 0)
         $dados = buscarDadosAssoc($id1, $id2, $seletor);
     }
     $la_l_idLivro = isset($_POST['la_l_idLivro']) ? $_POST['la_l_idLivro'] : "";
@@ -35,12 +35,14 @@
     <form action="acao.php" method="post" id="form" style="padding-left: 5vw; padding-right: 5vw;">
         <h1>Cadastro Livro_Autor</h1>
         <br>
+        <input type="hidden" id="old_id1" name="old_id1" class="old_id1" value="<?php echo $_GET['id1']; ?>">
+        <input type="hidden" id="old_id2" name="old_id2" class="old_id2" value="<?php echo $_GET['id2']; ?>">
         <div class="form-group">
         <label class="formItem formText" id="">Livro:</label>
         <select class="form-select" aria-label="Escolha o livro" name="la_l_idLivro" value="">  
             <?php
-                echo lista_livro(0);
-            ?>
+                echo listar('l_idLivro', 'l_titulo', 0, 'Livro');
+                ?>
         </select>
         </div>
         <br>
@@ -48,8 +50,8 @@
         <label class="formItem formText" id="">Autor:</label>
         <select class="form-select" aria-label="Escolha o autor" name="la_a_idAutor" value="">  
             <?php
-                echo lista_autor(0);
-            ?>
+                echo listar('a_idAutor', 'a_nome', 0, 'Autor');
+                ?>
         </select>
         </div>
         <br>

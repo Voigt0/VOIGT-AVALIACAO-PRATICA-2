@@ -68,9 +68,9 @@
             return $stmt->execute();
     }
 
-        public function update() {
+        public function update($old_id1, $old_id2) {
             $pdo = Conexao::getInstance();
-            $stmt = $pdo->prepare("UPDATE `Item_venda` SET `iv_v_idVenda` = :iv_v_idVenda, `iv_l_idLivro` = :iv_l_idLivro, `iv_quantidade` = :iv_quantidade, `iv_valor_total_item` = :iv_valor_total_item, `iv_data_venda` = :iv_data_venda WHERE (`iv_v_idVenda` = :iv_v_idVenda) and (`iv_l_idLivro` = :iv_l_idLivro);");
+            $stmt = $pdo->prepare("UPDATE `Item_venda` SET `iv_v_idVenda` = :iv_v_idVenda, `iv_l_idLivro` = :iv_l_idLivro, `iv_quantidade` = :iv_quantidade, `iv_valor_total_item` = :iv_valor_total_item, `iv_data_venda` = :iv_data_venda WHERE (`iv_v_idVenda` = $old_id1) and (`iv_l_idLivro` = $old_id2);");
             $stmt->bindValue(':iv_v_idVenda',  $this->setIdV($this->iv_v_idVenda), PDO::PARAM_INT);
             $stmt->bindValue(':iv_l_idLivro',  $this->setIdL($this->iv_l_idLivro), PDO::PARAM_INT);
             $stmt->bindValue(':iv_quantidade', $this->setQuant($this->iv_quantidade), PDO::PARAM_INT);

@@ -95,8 +95,8 @@
                 $livro->update();
                 header("location:tabelaLivro.php");
             } else if($seletor == "Livro_Autor"){
-                $livro = new Livro_Autor($_POST['la_l_idLivro'], $_POST['la_a_idAutor']);
-                $livro->update();
+                $livro_autor = new Livro_Autor($_POST['la_l_idLivro'], $_POST['la_a_idAutor']);
+                $livro_autor->update($_POST['old_id1'], $_POST['old_id2']);
                 header("location:tabelaLivro_Autor.php");
             } else if($seletor == "Cliente"){
                 $cliente = new Cliente($_POST['id'], $_POST['c_nome'], $_POST['c_cpf'], $_POST['c_dt_nascimento']);
@@ -108,7 +108,7 @@
                 header("location:tabelaVenda.php");
             } else if($seletor == "Item_venda"){
                 $item_venda = new Item_venda($_POST['iv_v_idVenda'], $_POST['iv_l_idLivro'], $_POST['iv_quantidade'], $_POST['iv_valor_total_item'], $_POST['iv_data_venda']);
-                $item_venda->update();
+                $item_venda->update($_POST['old_id1'], $_POST['old_id2']);
                 header("location:tabelaItem_venda.php");
             }
         } catch(Exception $e){
@@ -117,6 +117,7 @@
         }
         }
     }
+
 
     function buscarDados($id,$seletor){
         $pdo = Conexao::getInstance();
@@ -157,6 +158,7 @@
         return $dados;
     }
 
+
     function buscarDadosAssoc($id1, $id2, $seletor){
         $pdo = Conexao::getInstance();
         $dados = array();
@@ -169,6 +171,8 @@
     } else if($seletor == 'Item_venda'){
         $consulta = $pdo->query("SELECT * FROM Item_venda WHERE iv_v_idVenda = $id1 AND iv_l_idLivro = $id2");
         while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+            $dados['iv_v_idVenda'] = $linha['iv_v_idVenda'];
+            $dados['iv_l_idLivro'] = $linha['iv_l_idLivro'];
             $dados['iv_quantidade'] = $linha['iv_quantidade'];
             $dados['iv_valor_total_item'] = $linha['iv_valor_total_item'];
             $dados['iv_data_venda'] = $linha['iv_data_venda'];
@@ -176,44 +180,31 @@
     }
         return $dados;
     }
-    
-    function exibir($chave, $dado){
+
+
+    function listar($campo1, $campo2, $id, $classe) {
+        if($classe == "Livro") {
+            require_once("../classes/Livro.class.php");
+            $livro = new Livro("","", "", "", "");
+            $lista = $livro->buscarLivro($id);
+        } else if($classe == "Autor") {
+            require_once("../classes/Autor.class.php");
+            $autor = new Autor("","", "");
+            $lista = $autor->buscarAutor($id);
+        } else if($classe == "Cliente") {
+            require_once("../classes/Cliente.class.php");
+            $cliente = new Cliente("","", "", "");
+            $lista = $cliente->buscarCliente($id);
+        } else if($classe == "Venda") {
+            require_once("../classes/Venda.class.php");
+            $venda = new Venda("","", "", "");
+            $lista = $venda->buscarVenda($id);
+        }
         $str = 0;
-        foreach($dado as $linha){
-            $str .= "<option value='".$linha[$chave[0]]."'>".$linha[$chave[1]]."</option>";
+        foreach($lista as $linha) {
+            $str .= "<option value='".$linha[$campo1]."'>".$linha[$campo2]."</option>";
         }
         return $str;
     }
 
-    require_once("../classes/Livro.class.php");
-    function lista_livro($id){
-        $livro = new Livro("","", "", "", "");
-        $lista = $livro->buscarLivro($id);
-        return exibir(array('l_idLivro', 'l_titulo'), $lista);
-
-    }
-
-    require_once("../classes/Autor.class.php");
-    function lista_autor($id){
-        $autor = new Autor("","", "");
-        $lista = $autor->buscarAutor($id);
-        return exibir(array('a_idAutor', 'a_nome'), $lista);
-
-    }
-
-    require_once("../classes/Cliente.class.php");
-    function lista_cliente($id){
-        $cliente = new Cliente("","", "", "");
-        $lista = $cliente->buscarCliente($id);
-        return exibir(array('c_idCliente', 'c_nome'), $lista);
-
-    }
-
-    require_once("../classes/Venda.class.php");
-    function lista_venda($id){
-        $venda = new Venda("","", "", "");
-        $lista = $venda->buscarVenda($id);
-        return exibir(array('v_idVenda', 'v_idVenda'), $lista);
-
-    }
 ?>

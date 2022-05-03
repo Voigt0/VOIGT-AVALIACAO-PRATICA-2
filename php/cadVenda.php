@@ -49,8 +49,8 @@
         <div class="form-group">
         <select class="form-select" aria-label="Escolha o cliente" name="v_c_idCliente" value="">  
             <?php
-                echo lista_cliente(0);
-            ?>
+                echo listar('c_idCliente', 'c_nome', 0, 'Cliente');
+                ?>
         </select>
         </div>
         <br>

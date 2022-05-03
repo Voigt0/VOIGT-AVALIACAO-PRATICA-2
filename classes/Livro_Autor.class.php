@@ -37,12 +37,9 @@
             return $stmt->execute();
         }
 
-         public function update() {
+         public function update($old_id1, $old_id2) {
             $pdo = Conexao::getInstance();
-            echo $this->la_l_idLivro;
-            echo "<br>x<br>";
-            echo $this->la_a_idAutor;
-            $stmt = $pdo->prepare("UPDATE `Livro_Autor` SET `la_l_idLivro` = :la_l_idLivro, `la_a_idAutor` = :la_a_idAutor WHERE (`la_l_idLivro` = ':la_l_idLivro') and (`la_a_idAutor` = ':la_l_idLivro')");
+            $stmt = $pdo->prepare("UPDATE `Livro_Autor` SET `la_l_idLivro` = :la_l_idLivro, `la_a_idAutor` = :la_a_idAutor WHERE (`la_l_idLivro` = '$old_id1') AND (`la_a_idAutor` = '$old_id2')");
             $stmt->bindValue(':la_l_idLivro', $this->setIdL($this->la_l_idLivro), PDO::PARAM_INT);
             $stmt->bindValue(':la_a_idAutor', $this->setIdA($this->la_a_idAutor), PDO::PARAM_INT);
             return $stmt->execute();
@@ -57,23 +54,5 @@
             return $stmt->execute();
         }
 
-        // public function buscar($id){
-        //     require_once("conf/Conexao.php");
-
-        //     $conexao = Conexao::getInstance();
-
-        //     $query = 'SELECT * FROM Cliente';
-        //     if($id > 0){
-        //         $query .= ' WHERE c_idCliente = :Id';
-        //         $stmt->bindParam(':Id', $id);
-        //     }
-        //         $stmt = $conexao->prepare($query);
-        //         if($stmt->execute())
-        //             return $stmt->fetchAll();
-        
-        //         return false;
-
-        // }
     }
-
-    ?>
+?>
