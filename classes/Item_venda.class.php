@@ -105,15 +105,13 @@
 
         }
 
-        // public function adicionarItem(){
-            
-        //     $pdo = Conexao::getInstance();
-        //         $stmt = $pdo->prepare("UPDATE `Venda` SET `v_valor_total_venda` = :v_valor_total_venda WHERE (`v_idVenda` = :v_idVenda);");
-        //         $stmt->bindValue(':v_idVenda', $this->v_idVenda, PDO::PARAM_INT);
-        //         $stmt->bindValue(':v_valor_total_venda', $this->v_valor_total_venda, PDO::PARAM_STR);
-        //         return $stmt->execute();
-        // }
-
+        function adicionarItem($totalF, $v_idVenda){
+            $pdo = Conexao::getInstance();
+                $stmt = $pdo->prepare("UPDATE `Venda` SET `v_valor_total_venda` = :totalF WHERE (`v_idVenda` = :v_idVenda);");
+                $stmt->bindValue(':v_idVenda', $v_idVenda, PDO::PARAM_INT);
+                $stmt->bindValue(':totalF', $totalF, PDO::PARAM_STR);
+                return $stmt->execute();
+        }
 
     }
 ?>

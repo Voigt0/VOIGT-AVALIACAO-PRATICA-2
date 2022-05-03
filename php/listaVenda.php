@@ -2,7 +2,11 @@
 <?php   
    include_once "../conf/default.inc.php";
    require_once "../conf/Conexao.php";
+   include_once "../classes/Item_venda.class.php";
    $title = "Venda";
+   $id = $_GET['id'];
+   $cliente = $_GET['cliente'];
+   $totalAll = 0;
 ?>
 <html>
 <head>
@@ -16,39 +20,49 @@
 <body class="">
     <?php include_once "menu.php"; ?>
     <div class="">
+        <p>Venda: <?php echo $id; ?></p>
+        <p>Cliente: <?php echo $cliente; ?></p>
         <table class="table table-striped" style="background-color: #FFF;">
             <thead>
                 <tr class="table-dark">
                     <th scope="col">#ID</th>
-                    <th scope="col">Valor total da venda</th>
-                    <th scope="col">Desconto</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Alterar</th>
-                    <th scope="col">Excluir</th>
-                    <th scope="col">Listar</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Total</th>
                 </tr>
             </thead>
             <tbody>
             <?php
                 $pdo = Conexao::getInstance();
-                $consulta = $pdo->query("SELECT * FROM Venda, Cliente
-                                        WHERE $busca $type $procurar
+                $consulta = $pdo->query("SELECT v_idVenda, v_valor_total_venda, v_desconto, l_titulo, iv_quantidade, iv_valor_total_item, c_nome, l_preco
+                                        FROM Venda, Item_venda, Cliente, Livro
+                                        WHERE v_idVenda LIKE '$id%'
+                                        AND iv_v_idVenda = v_idVenda
+                                        AND l_idLivro = iv_l_idLivro 
                                         AND c_idCliente = v_c_idCliente
-                                        ORDER BY $busca");
+                                        ORDER BY v_idVenda");
                 while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                    $totalUni = $linha['l_preco'] * $linha['iv_quantidade'];
+                    $totalAll = $totalUni + $totalAll;
+                    $desconto = $linha['v_desconto'];
+                    $totalFin = $totalAll - $desconto;                    
+                    $item_venda = new Item_venda('', '', '', '', '');
+                    $item_venda->adicionarItem($totalFin, $id);
             ?>
-                <tr>
-                    <th scope="row"><?php echo $linha['v_idVenda'];?></th>
-                    <td scope="row"><?php echo $linha['v_valor_total_venda'];?></td>
-                    <td scope="row"><?php echo $linha['v_desconto'];?></td>
-                    <td scope="row"><?php echo $linha['c_nome'];?></td>
-                    <td scope="row"><a href="cadVenda.php?id=<?php echo $linha['v_idVenda'];?>&comando=update"><img src="../img/history-solid.svg" style="width: 3vw;"></a></td>
-                    <td><a onclick="return confirm('Deseja mesmo excluir?')" href="acao.php?id=<?php echo $linha['v_idVenda'];?>&seletor=Venda&comando=deletar"><img src="../img/trash.svg" style="width: 3vw;"></a></td>
-                    <td><a href='listaVenda.php?id=<?php echo $linha['v_idVenda'];?>'>Detalhes...</a></td>
-                </tr>
+            <tr>
+                <td><?php echo $linha['v_idVenda'];?></td>
+                <td><?php echo $linha['l_titulo'];?></td>
+                <td><?php echo $linha['iv_quantidade'];?></td>
+                <td><?php echo number_format ($linha['l_preco'], 2, ',', '.');?></td>
+                <td><?php echo number_format ($totalUni, 2, ',', '.');?></td>
+            </tr>
             <?php } ?> 
             </tbody>
         </table>
+        <p>Total: <?php echo number_format ($totalAll, 2, ',', '.');?></p>
+        <p>Desconto: <?php echo number_format ($desconto, 2, ',', '.');?></p>
+        <p>Total da venda: <?php echo number_format ($totalFin, 2, ',', '.');?></p>
     </div>
 </body>
 </html>

@@ -76,7 +76,7 @@
                     <td scope="row"><?php echo $linha['c_nome'];?></td>
                     <td scope="row"><a href="cadVenda.php?id=<?php echo $linha['v_idVenda'];?>&comando=update"><img src="../img/history-solid.svg" style="width: 3vw;"></a></td>
                     <td><a onclick="return confirm('Deseja mesmo excluir?')" href="acao.php?id=<?php echo $linha['v_idVenda'];?>&seletor=Venda&comando=deletar"><img src="../img/trash.svg" style="width: 3vw;"></a></td>
-                    <td><a href='listaVenda.php?id=<?php echo $linha['v_idVenda'];?>'>Detalhes...</a></td>
+                    <td><a href='listaVenda.php?id=<?php echo $linha['v_idVenda'];?>&cliente=<?php echo $linha['c_nome'];?>'>Detalhes...</a></td>
                 </tr>
             <?php } ?> 
             </tbody>
