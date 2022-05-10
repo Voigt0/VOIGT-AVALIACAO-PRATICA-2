@@ -41,6 +41,12 @@
             Classes
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="classes/Autor.class.php">Classe Autor</a></li>
+            <li><a class="dropdown-item" href="classes/Livro_Autor.class.php">Classe Livro_Autor</a></li>
+            <li><a class="dropdown-item" href="classes/Livro.class.php">Classe Livro</a></li>
+            <li><a class="dropdown-item" href="classes/Item_venda.class.php">Classe Item_venda</a></li>
+            <li><a class="dropdown-item" href="classes/Venda.class.php">Classe Venda</a></li>
+            <li><a class="dropdown-item" href="classes/Cliente.class.php">Classe Cliente</a></li>
           </ul>
         </li>
         <li class="nav-item">
