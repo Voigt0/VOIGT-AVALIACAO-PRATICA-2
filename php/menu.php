@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><img src="../img/menu.png" style="width: 4vw;"></a>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <a class="navbar-brand" href="#"><img class="glyphicon glyphicon-home w3-spin w3-jumbo" src="../img/menu.png" style="width: 4vw;"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
