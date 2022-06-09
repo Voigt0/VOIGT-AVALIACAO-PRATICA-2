@@ -84,7 +84,7 @@
 
             $query = 'SELECT * FROM Cliente';
             if($id > 0){
-                $query .= ' WHERE c_idCliente = :id';
+                $query .= ' WHERE c_idCliente LIKE :id';
                 $stmt->bindParam(':id', $id);
             }
                 $stmt = $conexao->prepare($query);
